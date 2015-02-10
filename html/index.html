@@ -1,15 +1,18 @@
 <html>
 	</head>
+	<meta name="viewport" 
+  content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 	<title>Index</title>
 	<script type="text/javascript" src="/_ah/channel/jsapi"></script>
 	<head>
-	<body>
+	<body onload="createroomdom()" onunload="closeconnections()">
 		<div id="main">
-			<form>
+			
+		</div>
+		<form>
 				<input type="button" value="Send message" onclick="maybestart()">
 				<input type="button" value="Send data channel message" onclick="send()">
 			</form>
-		</div>
 		<label id="user-id" style="display:none">{{user_id}}</label><br>
 		<label id="token" style="display:none">{{token}}</label>
 		<script>

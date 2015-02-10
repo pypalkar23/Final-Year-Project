@@ -1,11 +1,13 @@
-initiator=false;
+initiator=true;
 isstarted=false;
+/*initiator=false;
+isstarted=false;*/
 user_id=document.getElementById("user-id").innerHTML;
 token=document.getElementById("token").innerHTML;
 console.log(token);
 
 
-//configuration of servers
+//configuration of stun servers
 config={
       'iceServers':[
                   {
@@ -38,7 +40,7 @@ function sendMessage(msg){
   msgstring={};
   var JSONmsg=JSON.stringify(msg);
   console.log("JSON msg sent "+JSONmsg);
-  path="/message?u="+user_id;
+  path="/message?u="+user_id+"&r="+roomno;
   var xhr = new XMLHttpRequest();
   xhr.open('POST', path, true);
   xhr.send(JSONmsg);
@@ -47,7 +49,26 @@ function sendMessage(msg){
 //process signalling messages from server
 function processSignalingMessage(message) {
     msg=JSON.parse(message.data);
-    if(msg.type==='offer')
+    console.log(msg);
+    if(msg=="room joined")
+    {
+      maybestart();
+    }
+
+    if(msg=="room not available")
+    {
+      createroomdom();
+      document.getElementById("error").innerHTML="oops no one has created this room check your room number";
+    }
+
+    if(msg.type==='answer')
+      {
+        console.log("Answer received");
+        if(initiator)
+        peer.setRemoteDescription(new RTCSessionDescription(msg));
+        console.log("Remote Description Set at mobile side");    
+      }
+    /*if(msg.type==='offer')
       {
         console.log("offer received");
         if(!initiator && !isstarted)
@@ -58,7 +79,7 @@ function processSignalingMessage(message) {
           console.log("Remote Description Set at mobile side");
           doAnswer();
         }   
-      }
+      }*/
     else if (msg.type === 'candidate' && isstarted) {
     candidate = new RTCIceCandidate({sdpMLineIndex:msg.label,
                                          candidate:msg.candidate});
@@ -108,32 +129,10 @@ console.log("Opening channel.");
 
 
 dataChannelOptions = {
-  ordered: false, // do not guarantee order
+  ordered: true, //order guaranteed
   maxRetransmitTime: 3000, // in milliseconds
 };
 
-/*function createDataChannel()
-{
-    dataChannel =
-  peer.createDataChannel("abcd", dataChannelOptions);
-
-dataChannel.onerror = function (error) {
-  console.log("Data Channel Error:", error);
-};
-
-dataChannel.onmessage = function (event) {
-  console.log("Got Data Channel Message:", event.data);
-};
-
-dataChannel.onopen = function () {
-  dataChannel.send("Hello World!");
-};
-
-dataChannel.onclose = function () {
-  console.log("The Data Channel is Closed");
-};
-}
-*/
 function onIceCandidate(event)
 {
   if (event.candidate) {
@@ -146,19 +145,68 @@ function onIceCandidate(event)
     }
 }
 
+function del_user()
+{
+  sendMessage(
+    {
+      msg:"delete",
+      user:user_id
+    });
+}
+
+
 function maybestart()
 {
     peer=new webkitRTCPeerConnection(config,connection);
     console.log("RTC created");
-    peer.ondatachannel=onDataChannel;
     peer.onicecandidate=onIceCandidate; 
+    createDataChannel(); 
+    if(initiator && !isstarted)
+    {
+      isstarted=true;
+      doCall();
+    }   
+}
+
+function createDataChannel()
+{
+
+  console.log("data channel created");
+  dataChannel =
+  peer.createDataChannel("abcd", dataChannelOptions);
+
+dataChannel.onerror = function (error) {
+  console.log("Data Channel Error:", error);
+};
+
+dataChannel.onmessage = function (event) {
+  console.log("Got Data Channel Message:", event.data);
+};
+
+dataChannel.onopen = function () {
+  console.log("--Datachannel opened----");
+};
+
+dataChannel.onclose = function () {
+  console.log("The Data Channel is Closed");
+  closeconnections();
+};
+}
+//kicks of things
+/*function maybestart()
+{
+    peer=new webkitRTCPeerConnection(config,connection);
+    console.log("RTC created");
+    peer.onicecandidate=onIceCandidate; 
+    peer.ondatachannel=onDataChannel; 
     if(initiator && !isstarted)
     {
       isstarted=true;
     }
       
-}
+}*/
 
+//set local description and send it to another peer
 function setLocalandSendMessage(description)
 {
    peer.setLocalDescription(new RTCSessionDescription(description));
@@ -166,21 +214,21 @@ function setLocalandSendMessage(description)
    console.log(description);  
 }
 
+//creates offer and call another peer
 function doCall()
 {
     console.log("Sending offer to peer.");
     peer.createOffer(setLocalandSendMessage,function(){console.log("error while calling");},sdpConstraints);
 }
 
+//answer to the call by another peer
 function doAnswer(msg)
 {   
     console.log("Sending answer to peer.");
     peer.createAnswer(setLocalandSendMessage,function(){console.log("error while answering");},sdpConstraints);
 }
 
-openChannel();
-
-function onDataChannel(event)
+/*function onDataChannel(event)
 {
   dataChannel= event.channel;
   dataChannel.onerror = function (error) {
@@ -192,16 +240,87 @@ dataChannel.onmessage = function (event) {
 };
 
 dataChannel.onopen = function () {
-  dataChannel.send("Hello World!");
+  console.log("--Datachannel opened----");
 };
 
 dataChannel.onclose = function () {
   console.log("The Data Channel is Closed");
 };
 
+}*/
+/*function createDataChannel()
+{
+  dataChannel =
+  peer.createDataChannel("abcd", dataChannelOptions);
+
+dataChannel.onerror = function (error) {
+  console.log("Data Channel Error:", error);
+};
+
+dataChannel.onmessage = function (event) {
+  console.log("Got Data Channel Message:", event.data);
+};
+
+dataChannel.onopen = function () {
+  console.log("--Datachannel opened----");
+};
+
+dataChannel.onclose = function () {
+  console.log("The Data Channel is Closed");
+};
+}*/
+
+
+function createroomdom()
+{
+  var main=document.getElementById("main");
+  while(main.firstChild)
+    main.removeChild(main.firstChild);
+  var heading=document.createElement("h1");
+  heading.innerHTML="Join Room";
+  var roomform=document.createElement("form");
+  roomform.setAttribute("name","roomjoin");
+  roomform.id="roomjoin";
+
+  var roominput=document.createElement("input");
+  roominput.setAttribute("type","number");
+  roominput.setAttribute("size",4);
+  roominput.setAttribute("name","roominput");
+
+  var joinbutton=document.createElement("input");
+  joinbutton.setAttribute("type","button");
+  joinbutton.setAttribute("value","Join Room");  
+  joinbutton.setAttribute("onClick","checkRoom()");
+
+  var error=document.createElement("P");
+  error.id="error";
+
+  roomform.appendChild(roominput);
+  roomform.appendChild(error);
+  roomform.appendChild(joinbutton);
+  main.appendChild(heading);
+  main.appendChild(roomform);
 }
+
+function checkRoom()
+{
+  roomno=document.forms["roomjoin"]["roominput"].value;
+  if (roomno<1000 && roomno>9999)
+    document.getElementById("error").innerHTML="Room no must be a 4 digit value";
+  else
+     var message={action:"joinroom"};
+     sendMessage(message);
+}
+openChannel();
 
 function send()
 {
   dataChannel.send("Mobile to Desktop");
+}
+
+function closeconnections()
+{
+  console.log("all connections closed");
+  peer.close();
+  isstarted=false;
 }

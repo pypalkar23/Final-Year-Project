@@ -1,4 +1,4 @@
-initiator=true;
+initiator=false;
 isstarted=false;
 user_id=document.getElementById("user-id").innerHTML;
 token=document.getElementById("token").innerHTML;
@@ -32,12 +32,20 @@ sdpConstraints = {'mandatory':
   }
 };
 
+function del_user()
+{
+  sendMessage(
+    {
+      msg:"delete",
+      user:user_id
+    });
+}
+
 //send Message To Server
 function sendMessage(msg){
-  msgstring={};
   var JSONmsg=JSON.stringify(msg);
   console.log("JSON msg sent "+JSONmsg);
-  path="/message?u="+user_id;
+  path="/message?u="+user_id+"&r="+roomno;
   var xhr = new XMLHttpRequest();
   xhr.open('POST', path, true);
   xhr.send(JSONmsg);
@@ -47,14 +55,30 @@ function sendMessage(msg){
 function processSignalingMessage(message) {
     msg=JSON.parse(message.data);
     console.log(msg);
-    if(msg.type==='answer')
+    if(msg=="room created")
+      showRoomDom(roomno);
+
+    if(msg.type==='offer')
+      {
+        console.log("offer received");
+        if(!initiator && !isstarted)
+        {
+          isstarted=true;
+          maybestart();
+          console.log("maybestart called");
+          peer.setRemoteDescription(new RTCSessionDescription(msg));
+          console.log("Remote Description Set at Desktop side");
+          doAnswer();
+        }   
+      }
+    /**if(msg.type==='answer')
       {
         console.log("Answer received");
         if(initiator)
         peer.setRemoteDescription(new RTCSessionDescription(msg));
         console.log("Remote Description Set");    
-      }
-
+      }*/
+    
     else if (msg.type === 'candidate' && isstarted) {
     candidate = new RTCIceCandidate({sdpMLineIndex:msg.label,
                                          candidate:msg.candidate});
@@ -73,7 +97,6 @@ function onChannelMessage(message)
 {
   console.log("channel message arrived");
   processSignalingMessage(message);
-
 }
 
 //signalling channel error callback
@@ -122,7 +145,29 @@ dataChannelOptions = {
   maxRetransmitTime: 3000, // in milliseconds
 };
 
-function createDataChannel()
+function onDataChannel(event)
+{
+  dataChannel= event.channel;
+  dataChannel.onerror = function (error) {
+  console.log("Data Channel Error:", error);
+};
+
+dataChannel.onmessage = function (event) {
+  console.log("Got Data Channel Message:", event.data);
+};
+
+dataChannel.onopen = function () {
+  console.log("--Datachannel opened----");
+};
+
+dataChannel.onclose = function () {
+  console.log("The Data Channel is Closed");
+  closeconnections();
+};
+
+}
+
+/*function createDataChannel()
 {
   dataChannel =
   peer.createDataChannel("abcd", dataChannelOptions);
@@ -136,25 +181,21 @@ dataChannel.onmessage = function (event) {
 };
 
 dataChannel.onopen = function () {
-  dataChannel.send("Hello World!");
+  console.log("--Datachannel opened----");
 };
 
 dataChannel.onclose = function () {
   console.log("The Data Channel is Closed");
 };
-}
+}*/
 
 function maybestart()
 {
     peer=new webkitRTCPeerConnection(config,connection);
     console.log("RTC created");
     peer.onicecandidate=onIceCandidate; 
-    createDataChannel(); 
-    if(initiator && !isstarted)
-    {
-      isstarted=true;
-      doCall();
-    }   
+    peer.ondatachannel=onDataChannel; 
+      
 }
 
 
@@ -184,4 +225,105 @@ openChannel();
 function send()
 {
   dataChannel.send("Desktop to Mobile");
+}
+
+function createroomdom()
+{
+  var main=document.getElementById("main");
+  while(main.firstChild)
+  {
+    main.removeChild(main.firstChild);
+  }
+  var body=document.getElementsByTagName("body")[0];
+  
+  var roomform=document.createElement("form");
+  roomform.setAttribute("name","roominput");
+  roomform.id="roomform";
+
+  var roomno=document.createElement("input");
+  roomno.setAttribute("type","number");
+  roomno.setAttribute("name","roomno");
+  roomno.setAttribute("placeholder","Room Number");
+  roomno.setAttribute("required","true");
+  roomno.setAttribute("readOnly","true");
+
+  var genbutton=document.createElement("input");
+  genbutton.setAttribute("type","button"); 
+  genbutton.setAttribute("value","Generate");
+  genbutton.setAttribute("name","generateroomno");
+  genbutton.setAttribute("onClick","generateRoomNo()");
+  genbutton.id="generateroombutton";
+
+  var roombutton=document.createElement("input");
+  roombutton.setAttribute("type","button");
+  roombutton.setAttribute("value","Create");
+  roombutton.setAttribute("name","createroom");
+  roombutton.setAttribute("onClick","createRoom()");
+  roombutton.id="submitroombutton";
+
+  var error=document.createElement("P");
+  var newLine=document.createElement("br");
+  error.id="error";
+
+  roomform.appendChild(roomno);
+  roomform.appendChild(error);
+  roomform.appendChild(genbutton);
+  roomform.appendChild(roombutton);
+  main.appendChild(roomform);
+}
+
+function generateRoomNo()
+{
+  var roomno=0;
+  //generates 4 digit random no
+  for(var i=0;i<4;i++)
+    roomno+=Math.floor(Math.random()*9+1)*Math.pow(10,i);
+  document.forms["roominput"]["roomno"].value=roomno;
+}
+
+function showRoomDom(message)
+{
+  var main=document.getElementById("main");
+  while(main.firstChild)
+  {
+    main.removeChild(main.firstChild);
+  }
+  
+  var roomno=document.createElement("p");
+  roomno.id="textroomno";
+  roomno.innerHTML=message;
+  var gentext=document.createElement("p");
+  gentext.id="roomnotext"
+  gentext.innerHTML="Enter this no by visiting [[url]] on your mobile/tablet to start things";
+  var backbutton=document.createElement("button");
+  backbutton.innerHTML="generate another room";
+  backbutton.setAttribute("onClick","createroomdom()");
+
+  main.appendChild(roomno);
+  main.appendChild(gentext);
+  main.appendChild(backbutton);
+}
+
+function createRoom()
+{
+  roomno=document.forms["roominput"]["roomno"].value;
+  
+  if(roomno.length===0)
+  {
+    document.getElementById("error").innerHTML="Please generate a room number first";
+  }
+  else
+  {
+    var msg={action:"createroom"};
+    JSON.stringify(msg);
+    sendMessage(msg);//replace this with send message
+    
+  }
+}
+
+function closeconnections()
+{
+  console.log("all connections closed");
+  peer.close();
+  isstarted=false;
 }
