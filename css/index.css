@@ -1,0 +1,123 @@
+body
+{
+	margin: 0;
+	padding: 0;
+	max-width:100%;
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 600px;
+  }
+}
+
+@media screen and (max-width: 768px) and (orientation:portrait) {
+  .container {
+    padding: 0;
+
+  }
+}
+
+core-toolbar
+{
+	background-color: #3096e5;
+}
+
+core-toolbar span
+{
+	font-family: "RobotoDraft",sans-serif;
+	font-weight: 100;
+	font-size: 2.5em;
+	color:#FFFFFF;
+}
+
+form
+{
+	width:80%;
+	margin-left: 10%;
+}
+
+paper-input,paper-input-decorator
+{
+	width:70%;
+	margin-left: 15%;
+	font-family: 'RobotoDraft',sans-serif;
+	font-size: 2.5em;
+	font-weight: 300;
+}
+
+paper-input /deep/ .label-text,paper-input-decorator /deep/ .label-text {
+    color: orange;
+    font-size: 0.8em;
+}
+
+paper-button
+{
+	color: #3096e5;
+	font-family: 'RobotoDraft',sans-serif;
+	font-weight: 300;
+}
+
+form paper-button
+{
+	width:70%;
+	margin-left: 15%;
+	margin-bottom: 5%;
+	font-size: 1.4em;
+}
+
+
+#roomnotext
+{
+	font-family: 'RobotoDraft',sans-serif;
+	font-weight: 300;
+	font-size: 2em;
+	text-align: center;
+}
+
+#textroomno
+{
+	font-family: 'RobotoDraft',sans-serif;
+	font-weight: 300;
+	font-size: 3em;
+	text-align: center;
+	padding-top: 5%;
+}
+
+#spinner-div
+{
+	width:80%;
+	margin-left: 10%;
+	text-align: center;
+	margin-bottom: 5%;
+}
+
+#spinnertext
+{
+	font-size: 1.5em;
+	font-family: 'RobotoDraft',sans-serif;
+	font-weight: 300;
+	color:red;
+}
+
+#backbutton
+{
+	font-size:1.3em;
+	width:50%;
+	margin-left: 25%;
+}
+
+paper-spinner
+{
+	height:35px;
+	width: 35px;
+}
+
+#user-id,#token
+{display: none;}
+
+#playbutton
+{
+	width: 50%;
+	font-size:1.3em;
+}

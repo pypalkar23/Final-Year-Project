@@ -3,18 +3,39 @@
 	<meta name="viewport" 
   content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 	<title>Index</title>
+	<!--Script for google channel API-->
 	<script type="text/javascript" src="/_ah/channel/jsapi"></script>
+	<!--Script for google Polymer backward compatibility-->
+	<script src="../components/webcomponentsjs/webcomponents.js"></script>
+	<!--Polymer imports-->
+	<link rel="import" href="../components/font-roboto/roboto.html">
+	<link rel="import" href="../components/paper-input/paper-input.html">
+	<link rel="import" href="../components/paper-button/paper-button.html">
+	<link rel="import" href="../components/core-header-panel/core-header-panel.html">
+	<link rel="import" href="../components/core-icon/core-icon.html">
+    <link rel="import" href="../components/core-toolbar/core-toolbar.html">
+    <link rel="import" href="../components/core-icon-button/core-icon-button.html">
+     <link rel="import" href="../components/paper-spinner/paper-spinner.html">
+      <link rel="import" href="../components/core-input/core-input.html">
+      <link rel="import" href="../components/paper-input/paper-input-decorator.html">
+
+    <link href="../css/bootstrap.min.css" type="text/css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/css/index.css">
 	<head>
-	<body onload="createroomdom()" onunload="closeconnections()">
+	<body onload="createroomdom()" onunload="closeconnections()" unresolved>
+        <div class="container">
 		<div id="main">
-			
 		</div>
-		<form>
+		<label id="user-id">{{user_id}}</label><br>
+		<label id="token" >{{token}}</label>
+        </div>
+
+	<!--	<form>
 				<input type="button" value="Send message" onclick="maybestart()">
 				<input type="button" value="Send data channel message" onclick="send()">
-			</form>
-		<label id="user-id" style="display:none">{{user_id}}</label><br>
-		<label id="token" style="display:none">{{token}}</label>
+			</form>-->
+		
+		<!---<paper-button raised class="colored" role="button">button</paper-button>-->
 		<script>
 		var scriptload;
 		scriptload=document.createElement("script");

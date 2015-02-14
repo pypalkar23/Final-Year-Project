@@ -158,6 +158,7 @@ dataChannel.onmessage = function (event) {
 
 dataChannel.onopen = function () {
   console.log("--Datachannel opened----");
+  changeinfo();
 };
 
 dataChannel.onclose = function () {
@@ -167,6 +168,28 @@ dataChannel.onclose = function () {
 
 }
 
+function changeinfo()
+{
+  var spinnerdiv=document.getElementById("spinner-div");
+  var spinnertext=document.getElementById("spinnertext");
+  spinnertext.innerHTML="Connected";
+  spinnertext.style.color="green";
+  var spinner=document.getElementById("spinner");
+
+  var playbutton=document.createElement("paper-button");
+  playbutton.setAttribute("class","colored");
+  playbutton.setAttribute("role","button");
+  playbutton.setAttribute("raised","true");
+  playbutton.setAttribute("name","playbutton");
+  playbutton.setAttribute("onClick","");
+  playbutton.setAttribute("id","playbutton");
+  playbutton.id="playbutton";
+  playbutton.innerHTML="Let's Play";
+
+  spinnerdiv.replaceChild(playbutton,spinner);
+
+
+}
 /*function createDataChannel()
 {
   dataChannel =
@@ -240,36 +263,71 @@ function createroomdom()
   roomform.setAttribute("name","roominput");
   roomform.id="roomform";
 
-  var roomno=document.createElement("input");
+  var toolbar=document.createElement("core-toolbar");
+  toolbar.setAttribute("id","top-toolbar");
+  toolbar.setAttribute("class","medium-tall");
+   
+
+  
+  /*var toolbarbutton=document.createElement("core-icon-button");
+  toolbarbutton.setAttribute("icon","arrow-back");
+  toolbarbutton.setAttribute("class","bottom");
+  //toolbarbutton.setAttribute("on-tap","");*/
+  
+  var toolbarspan=document.createElement("span");
+  toolbarspan.innerHTML="Create a Room";
+  toolbarspan.setAttribute("class","middle intent");
+  
+
+  var toolbardiv=document.createElement("div");
+  toolbardiv.id="header";
+
+  var bodydiv=document.createElement("div");
+  bodydiv.id="bodydiv";
+
+
+  //toolbar.appendChild(toolbarbutton);
+  toolbar.appendChild(toolbarspan);
+  toolbardiv.appendChild(toolbar);
+
+  var roomno=document.createElement("paper-input");
   roomno.setAttribute("type","number");
   roomno.setAttribute("name","roomno");
-  roomno.setAttribute("placeholder","Room Number");
+  roomno.setAttribute("label","Room Number");
   roomno.setAttribute("required","true");
-  roomno.setAttribute("readOnly","true");
+  roomno.setAttribute("id","roomno");
+  roomno.setAttribute("disabled","true");
+  roomno.setAttribute("floatingLabel","true");
 
-  var genbutton=document.createElement("input");
-  genbutton.setAttribute("type","button"); 
-  genbutton.setAttribute("value","Generate");
+  var genbutton=document.createElement("paper-button");
+  genbutton.setAttribute("class","colored"); 
+  genbutton.setAttribute("role","button");
+  genbutton.setAttribute("raised","true");
   genbutton.setAttribute("name","generateroomno");
   genbutton.setAttribute("onClick","generateRoomNo()");
   genbutton.id="generateroombutton";
+  genbutton.innerHTML="Generate Room";
 
-  var roombutton=document.createElement("input");
-  roombutton.setAttribute("type","button");
-  roombutton.setAttribute("value","Create");
+  var roombutton=document.createElement("paper-button");
+  roombutton.setAttribute("class","colored");
+  roombutton.setAttribute("role","button");
+  roombutton.setAttribute("raised","true");
   roombutton.setAttribute("name","createroom");
   roombutton.setAttribute("onClick","createRoom()");
   roombutton.id="submitroombutton";
+  roombutton.innerHTML="Create Room";
 
   var error=document.createElement("P");
   var newLine=document.createElement("br");
   error.id="error";
 
   roomform.appendChild(roomno);
-  roomform.appendChild(error);
   roomform.appendChild(genbutton);
   roomform.appendChild(roombutton);
-  main.appendChild(roomform);
+  bodydiv.appendChild(roomform);
+  roomform.appendChild(error);
+  main.appendChild(toolbardiv);
+  main.appendChild(bodydiv);
 }
 
 function generateRoomNo()
@@ -278,7 +336,8 @@ function generateRoomNo()
   //generates 4 digit random no
   for(var i=0;i<4;i++)
     roomno+=Math.floor(Math.random()*9+1)*Math.pow(10,i);
-  document.forms["roominput"]["roomno"].value=roomno;
+  document.getElementById("roomno").value=roomno;
+  document.getElementById("error").style.display="none";
 }
 
 function showRoomDom(message)
@@ -288,25 +347,68 @@ function showRoomDom(message)
   {
     main.removeChild(main.firstChild);
   }
+
+  var toolbarspan=document.createElement("span");
+  toolbarspan.innerHTML="Join a Room";
+  toolbarspan.setAttribute("class","middle intent");
+  
+  var toolbar=document.createElement("core-toolbar");
+  toolbar.setAttribute("id","top-toolbar");
+  toolbar.setAttribute("class","medium-tall");
+
+  var toolbardiv=document.createElement("div");
+  toolbardiv.id="header";
+
+  toolbar.appendChild(toolbarspan);
+  toolbardiv.appendChild(toolbar);
+
+  var bodydiv=document.createElement("div");
+  bodydiv.id="bodydiv";
+
   
   var roomno=document.createElement("p");
   roomno.id="textroomno";
   roomno.innerHTML=message;
-  var gentext=document.createElement("p");
+ 
+ var gentext=document.createElement("p");
   gentext.id="roomnotext"
-  gentext.innerHTML="Enter this no by visiting [[url]] on your mobile/tablet to start things";
-  var backbutton=document.createElement("button");
-  backbutton.innerHTML="generate another room";
-  backbutton.setAttribute("onClick","createroomdom()");
+  
 
-  main.appendChild(roomno);
-  main.appendChild(gentext);
-  main.appendChild(backbutton);
+  var roombutton=document.createElement("paper-button");
+  roombutton.setAttribute("class","colored");
+  roombutton.setAttribute("role","button");
+  roombutton.setAttribute("raised","true");
+  roombutton.setAttribute("name","createroom");
+  roombutton.setAttribute("onClick","createroomdom()");
+  roombutton.id="backbutton";
+  roombutton.innerHTML="Create another Room";
+  gentext.innerHTML="Sample Text";
+
+  var spinnerdiv=document.createElement("div");
+  spinnerdiv.id="spinner-div";
+
+  var spinnertext=document.createElement("p");
+  spinnertext.id="spinnertext";
+  spinnertext.innerHTML="Waiting for other peer to connect";
+
+  var spinner=document.createElement("paper-spinner");
+  spinner.id="spinner";
+  spinner.active=true;
+
+  spinnerdiv.appendChild(spinnertext);
+  spinnerdiv.appendChild(spinner)
+
+  main.appendChild(toolbardiv);
+  bodydiv.appendChild(roomno);
+  bodydiv.appendChild(gentext);
+  bodydiv.appendChild(spinnerdiv);
+  bodydiv.appendChild(roombutton);
+  main.appendChild(bodydiv);
 }
 
 function createRoom()
 {
-  roomno=document.forms["roominput"]["roomno"].value;
+  roomno=document.getElementById("roomno").value;
   
   if(roomno.length===0)
   {
