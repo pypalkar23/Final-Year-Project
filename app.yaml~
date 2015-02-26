@@ -14,12 +14,16 @@ handlers:
 
 - url: /message
   script: webrtc.application
+  secure: always
 
 - url: /mobile
   script: webrtc.application
 
 - url: /js
   static_dir: js
+
+- url: /components
+  static_dir: components 
 
 - url: /css
   static_dir: css

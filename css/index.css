@@ -37,7 +37,7 @@ form
 	margin-left: 10%;
 }
 
-paper-input,paper-input-decorator
+paper-input-decorator
 {
 	width:70%;
 	margin-left: 15%;
@@ -46,7 +46,7 @@ paper-input,paper-input-decorator
 	font-weight: 300;
 }
 
-paper-input /deep/ .label-text,paper-input-decorator /deep/ .label-text {
+paper-input-decorator /deep/ .label-text {
     color: orange;
     font-size: 0.8em;
 }
