@@ -185,6 +185,7 @@ dataChannel.onmessage = function (event) {
 
 dataChannel.onopen = function () {
   console.log("--Datachannel opened----");
+  game_init();
 };
 
 dataChannel.onclose = function () {

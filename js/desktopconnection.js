@@ -153,7 +153,8 @@ function onDataChannel(event)
 };
 
 dataChannel.onmessage = function (event) {
-  console.log("Got Data Channel Message:", event.data);
+  //console.log("Got Data Channel Message:", event.data);
+  document.getElementById("accelerometer-reading").innerHTML=event.data;
 };
 
 dataChannel.onopen = function () {
@@ -168,28 +169,7 @@ dataChannel.onclose = function () {
 
 }
 
-function changeinfo()
-{
-  var spinnerdiv=document.getElementById("spinner-div");
-  var spinnertext=document.getElementById("spinnertext");
-  spinnertext.innerHTML="Connected";
-  spinnertext.style.color="green";
-  var spinner=document.getElementById("spinner");
 
-  var playbutton=document.createElement("paper-button");
-  playbutton.setAttribute("class","colored");
-  playbutton.setAttribute("role","button");
-  playbutton.setAttribute("raised","true");
-  playbutton.setAttribute("name","playbutton");
-  playbutton.setAttribute("onClick","");
-  playbutton.setAttribute("id","playbutton");
-  playbutton.id="playbutton";
-  playbutton.innerHTML="Let's Play";
-
-  spinnerdiv.replaceChild(playbutton,spinner);
-
-
-}
 /*function createDataChannel()
 {
   dataChannel =

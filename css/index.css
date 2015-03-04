@@ -18,6 +18,15 @@ body
   }
 }
 
+paper-input-decorator /deep/ ::-webkit-input-placeholder{
+    /* platform specific rules for placeholder text */
+    color: #3399FF;
+}
+
+input[type="number"]:focus {
+  color: #3399FF;
+}
+
 core-toolbar
 {
 	background-color: #3096e5;
