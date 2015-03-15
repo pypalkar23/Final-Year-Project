@@ -21,7 +21,6 @@ function createroomdom()
     
   /*var toolbarbutton=document.createElement("core-icon-button");
   toolbarbutton.setAttribute("icon","arrow-back");
-  toolbarbutton.setAttribute("class","bottom");
   //toolbarbutton.setAttribute("on-tap","");*/
   
   //text inside paper toolbar
@@ -128,7 +127,6 @@ function showRoomDom(message)
   var gentext=document.createElement("p");
   gentext.id="roomnotext"
   
-
   var roombutton=document.createElement("paper-button");
   roombutton.setAttribute("class","colored");
   roombutton.setAttribute("role","button");
@@ -191,13 +189,17 @@ function changeinfo()
   playbutton.setAttribute("role","button");
   playbutton.setAttribute("raised","true");
   playbutton.setAttribute("name","playbutton");
-  playbutton.setAttribute("onClick","");
   playbutton.setAttribute("id","playbutton");
-  playbutton.setAttribute("onClick","game_init()");
+  playbutton.setAttribute("onClick","load_script()");
   playbutton.id="playbutton";
   playbutton.innerHTML="Let's Play";
 
   spinnerdiv.replaceChild(playbutton,spinner);
 
 
+}
+
+function load_script()
+{
+  game_init();
 }

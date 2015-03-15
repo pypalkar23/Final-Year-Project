@@ -30,7 +30,10 @@ handlers:
 
 - url: /images
   static_dir: images
-  
+
+- url: /data
+  static_dir: data 
+
 - url: /favicon.ico
   static_files: media/img/favicon.ico
   upload: media/img/favicon.ico

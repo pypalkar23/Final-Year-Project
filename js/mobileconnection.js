@@ -91,6 +91,7 @@ function processSignalingMessage(message) {
 function onChannelOpened()
 {
   console.log("channel opened");
+  
 }
 
 //gets fired when message receives from signalling channel
@@ -127,7 +128,7 @@ console.log("Opening channel.");
   socket = channel.open(handler);
 }
 
-
+//datachannelconfigurations
 dataChannelOptions = {
   ordered: true, //order guaranteed
   maxRetransmitTime: 3000, // in milliseconds
@@ -168,9 +169,9 @@ function maybestart()
     }   
 }
 
+//creates data channel and sets its handler to it
 function createDataChannel()
 {
-
   console.log("data channel created");
   dataChannel =
   peer.createDataChannel("abcd", dataChannelOptions);
@@ -184,7 +185,7 @@ dataChannel.onmessage = function (event) {
 };
 
 dataChannel.onopen = function () {
-  console.log("--Datachannel opened----");
+  console.log("----Datachannel opened----");
   game_init();
 };
 
@@ -193,7 +194,7 @@ dataChannel.onclose = function () {
   closeconnections();
 };
 }
-//kicks of things
+//kicks things
 /*function maybestart()
 {
     peer=new webkitRTCPeerConnection(config,connection);
@@ -271,14 +272,15 @@ dataChannel.onclose = function () {
 };
 }*/
 
-
+//opens google signalling channel
 openChannel();
 
-function send()
+/*function send()
 {
   dataChannel.send("Mobile to Desktop");
-}
+}*/
 
+//close all the connections
 function closeconnections()
 {
   console.log("all connections closed");

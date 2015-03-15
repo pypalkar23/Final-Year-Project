@@ -1,0 +1,47 @@
+
+skiboy.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Head
+  rotate: false
+  xy: 423, 70
+  size: 454, 352
+  orig: 454, 352
+  offset: 0, 0
+  index: -1
+Leg 1
+  rotate: false
+  xy: 879, 50
+  size: 368, 372
+  orig: 368, 372
+  offset: 0, 0
+  index: -1
+Leg 2
+  rotate: false
+  xy: 1249, 59
+  size: 359, 363
+  orig: 359, 363
+  offset: 0, 0
+  index: -1
+Stick 1
+  rotate: false
+  xy: 1610, 62
+  size: 357, 360
+  orig: 357, 360
+  offset: 0, 0
+  index: -1
+Stick 2
+  rotate: false
+  xy: 1969, 63
+  size: 357, 359
+  orig: 357, 359
+  offset: 0, 0
+  index: -1
+Torso
+  rotate: false
+  xy: 2, 2
+  size: 419, 420
+  orig: 419, 420
+  offset: 0, 0
+  index: -1

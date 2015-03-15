@@ -1,16 +1,37 @@
+previous_value=0;
+current_value=0;
+move=0;
 function game_init()
-{
-	canvas_width=570;
-	canvas_height=650;
-
+{  
 	var main=document.getElementById("main");
 
 	while(main.firstChild)
 		main.removeChild(main.firstChild);
-	if (window.DeviceOrientationEvent) {
+  
+  var button=document.createElement("paper-button");
+  button.setAttribute("class","colored");
+  button.setAttribute("role","button");
+  button.setAttribute("raised","true");
+  button.setAttribute("id","jumpbutton");
+  button.onclick=sendjump;
+  
+  var button_text=document.createElement("label");
+  button_text.id="button-text";
+  button_text.innerHTML="Jump";
+
+  button.appendChild(button_text);
+  main.appendChild(button);
+
+  if (window.DeviceOrientationEvent) {
   
   // Listen for the deviceorientation event and handle the raw data
-  window.addEventListener('deviceorientation', function(eventData) {
+  window.addEventListener('deviceorientation', orientationHandle,false);
+} else {
+  document.getElementById("main").innerHTML = "Not supported."
+}
+}
+
+function orientationHandle(eventData) {
     // gamma is the left-to-right tilt in degrees, where right is positive
     //var tiltLR = eventData.gamma;
 
@@ -22,24 +43,28 @@ function game_init()
 
     // call our orientation event handler
     deviceOrientationHandler(tiltFB);
-  }, false);
-} else {
-  document.getElementById("main").innerHTML = "Not supported."
-}
-
-
-	/*var Stage = new PIXI.Stage(0xececec);
-	var Renderer = PIXI.autoDetectRenderer(canvas_width, canvas_height);
-
-	main.appendChild(Renderer.view);
-	Renderer.render(Stage);*/
-}
+  }
 
 function deviceOrientationHandler(tiltFB)
 {
-   while(main.firstChild)
-    main.removeChild(main.firstChild);
-   msg=JSON.stringify(Math.round(tiltFB));
-   dataChannel.send(msg);
-   console.log(tiltFB);
+    current_value=Math.round(tiltFB);
+    if(current_value<previous_value)
+      move=-1;
+    else if(current_value>previous_value)
+      move=1;
+    else
+      move=0;
+    msg=JSON.stringify(move);
+    dataChannel.send(msg);
+    //console.log(msg);
+    previous_value=current_value;
 }
+
+function sendjump(){
+  window.addEventListener('deviceorientation', null,false);
+  msg=JSON.stringify(1000);
+  dataChannel.send(msg);
+  console.log(1000);
+  window.addEventListener('deviceorientation', orientationHandle,false);
+ };
+

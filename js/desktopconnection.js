@@ -3,7 +3,7 @@ isstarted=false;
 user_id=document.getElementById("user-id").innerHTML;
 token=document.getElementById("token").innerHTML;
 console.log(token);
-
+customevent=document.createEvent("CustomEvent");
 //configuration of servers
 config={
 			'iceServers':[
@@ -153,8 +153,12 @@ function onDataChannel(event)
 };
 
 dataChannel.onmessage = function (event) {
-  //console.log("Got Data Channel Message:", event.data);
-  document.getElementById("accelerometer-reading").innerHTML=event.data;
+  if(event.data==1000)
+    playjump();
+  else
+    play(event.data);
+
+  //document.getElementById("accelerometer-reading").innerHTML=event.data;
 };
 
 dataChannel.onopen = function () {
@@ -201,7 +205,7 @@ function maybestart()
       
 }
 
-
+//sets local description and sends it to the other peer
 function setLocalandSendMessage(description)
 {
 
@@ -211,25 +215,29 @@ function setLocalandSendMessage(description)
      
 }
 
+//create an offer and send it to other peer
 function doCall()
 {
     console.log("Sending offer to peer.");
     peer.createOffer(setLocalandSendMessage,function(){console.log("error");},sdpConstraints);
 }
 
+//answer to the offer from other candidate
 function doAnswer()
 {   
     console.log("Sending answer to peer.");
     peer.createAnswer(setLocalandSendMessage,function(){console.log("error");},sdpConstraints);
 }
 
+//opens google signalling channel
 openChannel();
 
-function send()
+/*function send()
 {
   dataChannel.send("Desktop to Mobile");
-}
+}*/
 
+//close all connections
 function closeconnections()
 {
   console.log("all connections closed");

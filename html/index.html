@@ -18,16 +18,16 @@
     <link rel="import" href="../components/paper-spinner/paper-spinner.html">
     <link rel="import" href="../components/core-input/core-input.html">
     <link rel="import" href="../components/paper-input/paper-input-decorator.html">
-
     <link href="../css/bootstrap.min.css" type="text/css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/css/index.css">
 	<head>
 	<body onload="createroomdom()" onunload="closeconnections()" unresolved>
-        <div class="container">
+        <div class="container" id="containerdiv">
 		<div id="main">
 		</div>
 		<label id="user-id">{{user_id}}</label><br>
 		<label id="token" >{{token}}</label>
+		<label id="movevalue"></label>
         </div>
 
 	<!--	<form>
@@ -41,7 +41,6 @@
 		var connscript=document.createElement("script");
 		var domscript=document.createElement("script");
 		var canvasscript=document.createElement("script");
-		var pixi=document.createElement("script");
 		connscript.type="text/javascript"
 ;		if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
 		{
@@ -54,13 +53,14 @@
 			connscript.src="/js/desktopconnection.js";
 			domscript.src="/js/desktopdom.js";
 			canvasscript.src="/js/desktopcanvashandling.js";
-			pixi.src="/js/pixi.js";
-
+			var pixi=document.createElement("script");
+			pixi.src="/js/pixi/bin/pixi.js";
+			document.body.appendChild(pixi);
 		}
 		document.body.appendChild(connscript);
 		document.body.appendChild(domscript);
 		document.body.appendChild(canvasscript);
-		document.body.appendChild(pixi);
+		
 	</script>
 	</body>
 	
