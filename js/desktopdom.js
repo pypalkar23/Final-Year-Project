@@ -44,6 +44,8 @@ function createroomdom()
   inputdecorator.setAttribute("label","Room number");
   inputdecorator.floatingLabel=true;
 
+  //input field
+  //disabled,shows a 4-digit random number 
   var roomno=document.createElement("input");
   roomno.setAttribute("is","core-input");
   roomno.setAttribute("type","number");
@@ -52,6 +54,7 @@ function createroomdom()
   roomno.setAttribute("required","true");
   roomno.setAttribute("id","roomno");
 
+  //button to generate 4 digit random number
   var genbutton=document.createElement("paper-button");
   genbutton.setAttribute("class","colored"); 
   genbutton.setAttribute("role","button");
@@ -61,6 +64,7 @@ function createroomdom()
   genbutton.id="generateroombutton";
   genbutton.innerHTML="Generate Room";
 
+  //button to create a room on server.
   var roombutton=document.createElement("paper-button");
   roombutton.setAttribute("class","colored");
   roombutton.setAttribute("role","button");
@@ -70,6 +74,7 @@ function createroomdom()
   roombutton.id="submitroombutton";
   roombutton.innerHTML="Create Room";
 
+  //space for error
   var error=document.createElement("P");
   var newLine=document.createElement("br");
   error.id="error";
@@ -85,6 +90,7 @@ function createroomdom()
 
 function generateRoomNo()
 {
+  //generates 4 digit random number
   var roomno=0;
   document.getElementById("roomno").focus();
   //generates 4 digit random no
@@ -96,12 +102,13 @@ function generateRoomNo()
 
 function showRoomDom(message)
 {
+
   var main=document.getElementById("main");
   while(main.firstChild)
   {
     main.removeChild(main.firstChild);
   }
-
+  
   var toolbarspan=document.createElement("span");
   toolbarspan.innerHTML="Join a Room";
   toolbarspan.setAttribute("class","middle intent");
@@ -109,7 +116,7 @@ function showRoomDom(message)
   var toolbar=document.createElement("core-toolbar");
   toolbar.setAttribute("id","top-toolbar");
   toolbar.setAttribute("class","medium-tall");
-
+  
   var toolbardiv=document.createElement("div");
   toolbardiv.id="header";
 

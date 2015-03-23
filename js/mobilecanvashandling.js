@@ -2,7 +2,9 @@ previous_value=0;
 current_value=0;
 move=0;
 function game_init()
-{  
+{ 
+
+  //lockedAllowed=screen.lockOrientation("landscape-primary");
 	var main=document.getElementById("main");
 
 	while(main.firstChild)
@@ -55,14 +57,16 @@ function deviceOrientationHandler(tiltFB)
     else
       move=0;
     msg=JSON.stringify(move);
+    if(dataChannel.readyState=="open")
     dataChannel.send(msg);
-    //console.log(msg);
+    console.log(msg);
     previous_value=current_value;
 }
 
 function sendjump(){
   window.addEventListener('deviceorientation', null,false);
   msg=JSON.stringify(1000);
+  if(dataChannel.readyState=="open")
   dataChannel.send(msg);
   console.log(1000);
   window.addEventListener('deviceorientation', orientationHandle,false);
