@@ -54,6 +54,10 @@ function createroomdom()
   joinbutton.innerHTML="Join Room"; 
   joinbutton.setAttribute("onClick","checkRoom()");
 
+  
+  
+
+
   var error=document.createElement("P");
   error.id="error";
 

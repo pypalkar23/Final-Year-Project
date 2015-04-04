@@ -12,12 +12,13 @@
 	<link rel="import" href="../components/font-roboto/roboto.html">
 	<link rel="import" href="../components/paper-button/paper-button.html">
 	<link rel="import" href="../components/core-header-panel/core-header-panel.html">
-	<link rel="import" href="../components/core-icon/core-icon.html">
+	<link rel="import" href="../components/core-icons/core-icons.html">
     <link rel="import" href="../components/core-toolbar/core-toolbar.html">
     <link rel="import" href="../components/core-icon-button/core-icon-button.html">
     <link rel="import" href="../components/paper-spinner/paper-spinner.html">
     <link rel="import" href="../components/core-input/core-input.html">
     <link rel="import" href="../components/paper-input/paper-input-decorator.html">
+    <link rel="import" href="../components/paper-fab/paper-fab.html">
     <link href="../css/bootstrap.min.css" type="text/css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/css/index.css">
 	<head>
@@ -30,19 +31,18 @@
 		<label id="movevalue"></label>
         </div>
 
-	<!--	<form>
-				<input type="button" value="Send message" onclick="maybestart()">
-				<input type="button" value="Send data channel message" onclick="send()">
-			</form>-->
-		
-	<!---<paper-button raised class="colored" role="button">button</paper-button>-->
+	<!--<form>
+			<input type="button" value="Send message" onclick="maybestart()">
+			<input type="button" value="Send data channel message" onclick="send()">
+		</form>
+	<paper-button raised class="colored" role="button">button</paper-button>-->
 		<script type="text/javascript" src="/_ah/channel/jsapi"></script>
 		<script>
 		var connscript=document.createElement("script");
 		var domscript=document.createElement("script");
 		var canvasscript=document.createElement("script");
-		connscript.type="text/javascript"
-;		if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
+		connscript.type="text/javascript";		
+		if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
 		{
 			connscript.src="/js/mobileconnection.js";
 			domscript.src="/js/mobiledom.js";

@@ -133,6 +133,8 @@ function showRoomDom(message)
  
   var gentext=document.createElement("p");
   gentext.id="roomnotext"
+  gentext.innerHTML="Enter this number on the mobile device's textbox and click on the \"Join Room\" button";
+
   
   var roombutton=document.createElement("paper-button");
   roombutton.setAttribute("class","colored");
@@ -142,8 +144,7 @@ function showRoomDom(message)
   roombutton.setAttribute("onClick","createroomdom()");
   roombutton.id="backbutton";
   roombutton.innerHTML="Create another Room";
-  gentext.innerHTML="Sample Text";
-
+  
   var spinnerdiv=document.createElement("div");
   spinnerdiv.id="spinner-div";
 

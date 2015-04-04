@@ -158,7 +158,7 @@ function del_user()
 
 function maybestart()
 {
-    peer=new webkitRTCPeerConnection(config,connection);
+    peer=new window.webkitRTCPeerConnection(config,connection) || new window.mozRTCPeerConnection(config,connection);
     console.log("RTC created");
     peer.onicecandidate=onIceCandidate; 
     createDataChannel(); 
@@ -173,15 +173,16 @@ function maybestart()
 function createDataChannel()
 {
   console.log("data channel created");
-  dataChannel =
-  peer.createDataChannel("abcd", dataChannelOptions);
+  dataChannel =  peer.createDataChannel("abcd", dataChannelOptions);
 
 dataChannel.onerror = function (error) {
   console.log("Data Channel Error:", error);
 };
 
 dataChannel.onmessage = function (event) {
-  console.log("Got Data Channel Message:", event.data);
+  //console.log("Got Data Channel Message:", event.data);
+  //if(event.data==5000)
+    navigator.vibrate(200);
 };
 
 dataChannel.onopen = function () {
@@ -275,10 +276,6 @@ dataChannel.onclose = function () {
 //opens google signalling channel
 openChannel();
 
-/*function send()
-{
-  dataChannel.send("Mobile to Desktop");
-}*/
 
 //close all the connections
 function closeconnections()

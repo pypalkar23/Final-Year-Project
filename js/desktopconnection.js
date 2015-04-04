@@ -7,15 +7,15 @@ customevent=document.createEvent("CustomEvent");
 //configuration of servers
 config={
 			'iceServers':[
-        					{
-            					"url":"stun:numb.viagenie.ca",
-            					"credential": "krutikamandarvarun",
-            					"username": "beproject119"
-       						},
-        					{
-        						"url":"stun:stun.l.google.com:19302"
-        					}
-        		 		]
+        {
+          "url":"stun:numb.viagenie.ca",
+          "credential": "krutikamandarvarun",
+          "username": "beproject119"
+       		},
+        	{
+        		"url":"stun:stun.l.google.com:19302"
+        	}
+        ]
 		  };
 
 //connection configuration
@@ -31,6 +31,7 @@ sdpConstraints = {'mandatory':
     'OfferToReceiveVideo': false
   }
 };
+
 
 function del_user()
 {
@@ -155,6 +156,8 @@ function onDataChannel(event)
 dataChannel.onmessage = function (event) {
   if(event.data==1000)
     playjump();
+  else if(event.data==2000)
+    change_state();
   else
     play(event.data);
 
@@ -173,32 +176,9 @@ dataChannel.onclose = function () {
 
 }
 
-
-/*function createDataChannel()
-{
-  dataChannel =
-  peer.createDataChannel("abcd", dataChannelOptions);
-
-dataChannel.onerror = function (error) {
-  console.log("Data Channel Error:", error);
-};
-
-dataChannel.onmessage = function (event) {
-  console.log("Got Data Channel Message:", event.data);
-};
-
-dataChannel.onopen = function () {
-  console.log("--Datachannel opened----");
-};
-
-dataChannel.onclose = function () {
-  console.log("The Data Channel is Closed");
-};
-}*/
-
 function maybestart()
 {
-    peer=new webkitRTCPeerConnection(config,connection);
+    peer=new window.webkitRTCPeerConnection(config,connection);
     console.log("RTC created");
     peer.onicecandidate=onIceCandidate; 
     peer.ondatachannel=onDataChannel; 
@@ -228,7 +208,6 @@ function doAnswer()
     console.log("Sending answer to peer.");
     peer.createAnswer(setLocalandSendMessage,function(){console.log("error");},sdpConstraints);
 }
-
 //opens google signalling channel
 openChannel();
 

@@ -15,7 +15,14 @@ body
   .container {
     padding: 0;
 
+
   }
+}
+
+.container
+{
+	box-shadow:5px 0px 5px #888888,-5px 0px 5px #888888;
+	height:100%;
 }
 
 paper-input-decorator /deep/ ::-webkit-input-placeholder{
@@ -80,8 +87,11 @@ form paper-button
 {
 	font-family: 'RobotoDraft',sans-serif;
 	font-weight: 300;
-	font-size: 2em;
+	font-size: 1.7em;
+	width:60%;
+	margin-left: 20%;
 	text-align: center;
+
 }
 
 #textroomno
@@ -146,8 +156,21 @@ paper-spinner
 {
 	font-family: "RobotoDraft",sans-serif;
 	font-weight: 300;
-	font-size: 2em;
+	font-size: 2em;4
 	padding-top: 15vw;
 	line-height: 5vw;
 }
 
+#pausebutton
+{
+	position:absolute;
+	bottom:10px;
+	left:15px;
+}
+
+#playtext
+{
+	position: absolute;
+	bottom:60px;
+	left:5px;
+}

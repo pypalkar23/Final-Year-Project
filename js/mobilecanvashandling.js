@@ -1,9 +1,9 @@
 previous_value=0;
 current_value=0;
 move=0;
+play_state=true;
 function game_init()
 { 
-
   //lockedAllowed=screen.lockOrientation("landscape-primary");
 	var main=document.getElementById("main");
 
@@ -16,13 +16,25 @@ function game_init()
   button.setAttribute("raised","true");
   button.setAttribute("id","jumpbutton");
   button.onclick=sendjump;
-  
+    
   var button_text=document.createElement("label");
   button_text.id="button-text";
   button_text.innerHTML="Jump";
 
+  var playbutton=document.createElement("paper-fab");
+  playbutton.setAttribute("icon","send");
+  playbutton.setAttribute("class","blue");
+  playbutton.setAttribute("id","pausebutton");
+  playbutton.onclick=sendplay;
+
+  var playtext=document.createElement("label");
+  playtext.innerHTML="Play/Pause";
+  playtext.id="playtext";
+
   button.appendChild(button_text);
+  main.appendChild(playtext);
   main.appendChild(button);
+  main.appendChild(playbutton);
 
   if (window.DeviceOrientationEvent) {
   
@@ -71,4 +83,12 @@ function sendjump(){
   console.log(1000);
   window.addEventListener('deviceorientation', orientationHandle,false);
  };
+
+ function sendplay()
+ {
+  msg=JSON.stringify(2000);
+  if(dataChannel.readyState=="open")
+  dataChannel.send(msg);
+  console.log(2000);
+ }
 
