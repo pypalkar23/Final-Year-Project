@@ -35,7 +35,7 @@ sdpConstraints = {'mandatory':
   }
 };
 
-//send Message To Server
+//sends Message To Server
 function sendMessage(msg){
   msgstring={};
   var JSONmsg=JSON.stringify(msg);
@@ -87,14 +87,14 @@ function processSignalingMessage(message) {
   }
 }
 
-//gets fired when signalling channel opens
+//called when signalling channel opens
 function onChannelOpened()
 {
   console.log("channel opened");
   
 }
 
-//gets fired when message receives from signalling channel
+//called when message receives from signalling channel
 function onChannelMessage(message)
 {
   console.log("channel message arrived");
@@ -131,7 +131,7 @@ console.log("Opening channel.");
 //datachannelconfigurations
 dataChannelOptions = {
   ordered: true, //order guaranteed
-  maxRetransmitTime: 3000, // in milliseconds
+  maxRetransmitTime: 3000 // in milliseconds
 };
 
 function onIceCandidate(event)
@@ -146,6 +146,7 @@ function onIceCandidate(event)
     }
 }
 
+//deletes room from the server
 function del_user()
 {
   sendMessage(
@@ -158,7 +159,13 @@ function del_user()
 
 function maybestart()
 {
-    peer=new window.webkitRTCPeerConnection(config,connection) || new window.mozRTCPeerConnection(config,connection);
+  if(!window.webkitRTCPeerConnection)
+  {
+    document.body.innerHTML="Please use Chrome 30 or later";
+  }
+  else
+  {
+    peer=new window.webkitRTCPeerConnection(config,connection);
     console.log("RTC created");
     peer.onicecandidate=onIceCandidate; 
     createDataChannel(); 
@@ -166,7 +173,8 @@ function maybestart()
     {
       isstarted=true;
       doCall();
-    }   
+    } 
+  }  
 }
 
 //creates data channel and sets its handler to it
@@ -181,7 +189,7 @@ dataChannel.onerror = function (error) {
 
 dataChannel.onmessage = function (event) {
   //console.log("Got Data Channel Message:", event.data);
-  //if(event.data==5000)
+  if(event.data==5000)
     navigator.vibrate(200);
 };
 
@@ -195,19 +203,7 @@ dataChannel.onclose = function () {
   closeconnections();
 };
 }
-//kicks things
-/*function maybestart()
-{
-    peer=new webkitRTCPeerConnection(config,connection);
-    console.log("RTC created");
-    peer.onicecandidate=onIceCandidate; 
-    peer.ondatachannel=onDataChannel; 
-    if(initiator && !isstarted)
-    {
-      isstarted=true;
-    }
-      
-}*/
+
 
 //set local description and send it to another peer
 function setLocalandSendMessage(description)
@@ -230,48 +226,6 @@ function doAnswer(msg)
     console.log("Sending answer to peer.");
     peer.createAnswer(setLocalandSendMessage,function(){console.log("error while answering");},sdpConstraints);
 }
-
-/*function onDataChannel(event)
-{
-  dataChannel= event.channel;
-  dataChannel.onerror = function (error) {
-  console.log("Data Channel Error:", error);
-};
-
-dataChannel.onmessage = function (event) {
-  console.log("Got Data Channel Message:", event.data);
-};
-
-dataChannel.onopen = function () {
-  console.log("--Datachannel opened----");
-};
-
-dataChannel.onclose = function () {
-  console.log("The Data Channel is Closed");
-};
-
-}*/
-/*function createDataChannel()
-{
-  dataChannel =
-  peer.createDataChannel("abcd", dataChannelOptions);
-
-dataChannel.onerror = function (error) {
-  console.log("Data Channel Error:", error);
-};
-
-dataChannel.onmessage = function (event) {
-  console.log("Got Data Channel Message:", event.data);
-};
-
-dataChannel.onopen = function () {
-  console.log("--Datachannel opened----");
-};
-
-dataChannel.onclose = function () {
-  console.log("The Data Channel is Closed");
-};
-}*/
 
 //opens google signalling channel
 openChannel();

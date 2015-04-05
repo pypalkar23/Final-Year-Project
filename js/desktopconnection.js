@@ -178,10 +178,18 @@ dataChannel.onclose = function () {
 
 function maybestart()
 {
-    peer=new window.webkitRTCPeerConnection(config,connection);
-    console.log("RTC created");
-    peer.onicecandidate=onIceCandidate; 
-    peer.ondatachannel=onDataChannel; 
+    if(!window.webkitRTCPeerConnection)
+    {
+      document.getElementById("main").innerHTML="Please use latest version of chrome browser";
+      console.log("does notsupport WebRTC")
+    }
+    else
+    {
+      peer=new window.webkitRTCPeerConnection(config,connection);
+      console.log("RTC created");
+      peer.onicecandidate=onIceCandidate; 
+      peer.ondatachannel=onDataChannel; 
+  }
       
 }
 
@@ -211,10 +219,6 @@ function doAnswer()
 //opens google signalling channel
 openChannel();
 
-/*function send()
-{
-  dataChannel.send("Desktop to Mobile");
-}*/
 
 //close all connections
 function closeconnections()

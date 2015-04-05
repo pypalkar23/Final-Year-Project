@@ -54,10 +54,6 @@ function createroomdom()
   joinbutton.innerHTML="Join Room"; 
   joinbutton.setAttribute("onClick","checkRoom()");
 
-  
-  
-
-
   var error=document.createElement("P");
   error.id="error";
 
@@ -73,6 +69,10 @@ function checkRoom()
   roomno=document.forms["roomjoin"]["roominput"].value;
   if (roomno<1000 && roomno>9999)
     document.getElementById("error").innerHTML="Room no must be a 4 digit value";
+  else if (/^\d{4}$/.test(roomno)==false)
+  {
+    document.getElementById("error").innerHTML="Please enter appropriate 4 digit room number";
+  }
   else
      var message={action:"joinroom"};
      sendMessage(message);

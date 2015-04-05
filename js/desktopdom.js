@@ -18,10 +18,7 @@ function createroomdom()
   var toolbar=document.createElement("core-toolbar");
   toolbar.setAttribute("id","top-toolbar");
   toolbar.setAttribute("class","medium-tall");
-    
-  /*var toolbarbutton=document.createElement("core-icon-button");
-  toolbarbutton.setAttribute("icon","arrow-back");
-  //toolbarbutton.setAttribute("on-tap","");*/
+
   
   //text inside paper toolbar
   var toolbarspan=document.createElement("span");
@@ -174,6 +171,10 @@ function createRoom()
   if(roomno.length===0)
   {
     document.getElementById("error").innerHTML="Please generate a room number first";
+  }
+  else if (/^\d{4}$/.test(roomno)==false)
+  {
+    document.getElementById("error").innerHTML="Please enter appropriate 4 digit room number";
   }
   else
   {

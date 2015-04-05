@@ -14,8 +14,6 @@ body
 @media screen and (max-width: 768px) and (orientation:portrait) {
   .container {
     padding: 0;
-
-
   }
 }
 
@@ -156,8 +154,8 @@ paper-spinner
 {
 	font-family: "RobotoDraft",sans-serif;
 	font-weight: 300;
-	font-size: 2em;4
-	padding-top: 15vw;
+	font-size: 2em;
+	margin-top: 13vw!important;
 	line-height: 5vw;
 }
 
